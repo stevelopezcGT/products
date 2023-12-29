@@ -10,17 +10,18 @@ namespace Products.Application.Helpers.Products
 {
     public static class ConvertProductToGetProductDTO
     {
-        public static GetProductDTO Convert(Product product, Status status)
+        public static GetProductDTO Convert(Product product, Status status, decimal discount)
         {
             return new GetProductDTO
             {
                 Description = product.Description,
-                Discount = GetProductDiscount.Get(product.Id),
+                Discount = discount,
                 Name = product.Name,
                 Price = product.Price,
                 ProductId = product.Id,
                 Stock = product.Stock,
-                StatusName = status.StatusName
+                StatusName = status.StatusName,
+                
             };
         }
     }
