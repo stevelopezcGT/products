@@ -13,7 +13,9 @@ namespace Products.Application.Helpers.Products
                 Name = newProductDTO.Name,
                 Price = newProductDTO.Price,
                 StatusId = newProductDTO.StatusId,
-                Stock = newProductDTO.Stock
+                Stock = newProductDTO.Stock,
+                CreatedAt= DateTimeOffset.Now,
+                UpdatedAt= DateTimeOffset.Now
             };
 
         }

@@ -26,12 +26,12 @@ namespace Products.Application.Services
             statusService = _statusService;
         }
 
-        public GetProductDTO Add(NewProductDTO productDTO)
+        public async Task<GetProductDTO> Add(NewProductDTO productDTO)
         {
             var product = ConvertNewProductDTOtoProduct.Convert(productDTO);
             productRepository.Add(product);
 
-            var result = unitOfWork.SaveChanges();
+            await unitOfWork.SaveChangesAsync();
 
             var status = statusService.GetStatus(productDTO.StatusId);
             return ConvertProductToGetProductDTO.Convert(product, status);
@@ -40,6 +40,9 @@ namespace Products.Application.Services
         public async Task<int> Delete(int id)
         {
             var product = await productRepository.GetByIdAsync(id);
+            if (product == null)
+                throw new Exception("Product doesn't exists");
+
             productRepository.Remove(product);
 
             var result = unitOfWork.SaveChanges();
@@ -50,6 +53,9 @@ namespace Products.Application.Services
         public async Task<GetProductDTO> GetProductById(int id)
         {
             var product = await productRepository.GetByIdAsync(id);
+            if (product == null)
+                throw new Exception("Product doesn't exists");
+
             var status = statusService.GetStatus(product.StatusId);
             return ConvertProductToGetProductDTO.Convert(product, status);
         }
@@ -57,6 +63,8 @@ namespace Products.Application.Services
         public async Task<GetProductDTO> Update(EditProductDTO productDTO)
         {
             var product = await productRepository.GetByIdAsync(productDTO.Id);
+            if (product == null)
+                throw new Exception("Product doesn't exists");
 
             product = ConvertEditProductDTOtoProduct.Convert(productDTO, product);
 

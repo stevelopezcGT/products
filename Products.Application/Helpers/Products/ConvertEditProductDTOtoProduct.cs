@@ -12,6 +12,7 @@ namespace Products.Application.Helpers.Products
             product.Price = editProductDTO.Price;
             product.StatusId = editProductDTO.StatusId;
             product.Stock = editProductDTO.Stock;
+            product.UpdatedAt= DateTimeOffset.Now;
 
             return product;
         }
