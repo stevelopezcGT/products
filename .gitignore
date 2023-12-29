@@ -9,3 +9,5 @@
 /products.Test/obj
 /Products.Application/obj
 /Products.Infrastructure/bin/Debug/net8.0
+/Products.Core/bin/Debug/net8.0
+/Products.Test/bin/Debug/net8.0
