@@ -16,14 +16,17 @@ namespace Products.Application.Services
         private readonly IUnitOfWork unitOfWork;
         private readonly IProductRepository productRepository;
         private readonly IStatusService statusService;
+        private readonly IDiscountService discountService;
 
         public ProductService(IUnitOfWork _unitOfWork, 
                               IProductRepository _productRepository, 
-                              IStatusService _statusService) 
+                              IStatusService _statusService,
+                              IDiscountService _discountService) 
         {
             this.unitOfWork = _unitOfWork;
             this.productRepository = _productRepository;
             statusService = _statusService;
+            discountService = _discountService;
         }
 
         public async Task<GetProductDTO> Add(NewProductDTO productDTO)
@@ -34,7 +37,7 @@ namespace Products.Application.Services
             await unitOfWork.SaveChangesAsync();
 
             var status = statusService.GetStatus(productDTO.StatusId);
-            return ConvertProductToGetProductDTO.Convert(product, status);
+            return ConvertProductToGetProductDTO.Convert(product, status, 0);
         }
 
         public async Task<int> Delete(int id)
@@ -57,7 +60,8 @@ namespace Products.Application.Services
                 throw new Exception("Product doesn't exists");
 
             var status = statusService.GetStatus(product.StatusId);
-            return ConvertProductToGetProductDTO.Convert(product, status);
+            var discount = await discountService.GetDiscount( id );
+            return ConvertProductToGetProductDTO.Convert(product, status, discount);
         }
 
         public async Task<GetProductDTO> Update(EditProductDTO productDTO)
@@ -72,7 +76,8 @@ namespace Products.Application.Services
             unitOfWork.SaveChanges();
 
             var status = statusService.GetStatus(productDTO.StatusId);
-            return ConvertProductToGetProductDTO.Convert(product, status);
+            var discount = await discountService.GetDiscount(productDTO.Id);
+            return ConvertProductToGetProductDTO.Convert(product, status, discount);
         }
     }
 }

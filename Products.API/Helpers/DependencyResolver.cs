@@ -19,7 +19,7 @@ namespace Products.API.Helpers
             #region Services
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IStatusService, StatusService>();
-
+            services.AddTransient<IDiscountService, DiscountService>();
             #endregion
 
             #region Repositories
