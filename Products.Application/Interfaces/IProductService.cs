@@ -9,7 +9,7 @@ namespace Products.Application.Interfaces
 {
     public interface IProductService
     {
-        GetProductDTO Add(NewProductDTO productDTO);
+        Task<GetProductDTO> Add(NewProductDTO productDTO);
         Task<GetProductDTO> Update(EditProductDTO productDTO);
         Task<int> Delete(int id);
         Task<GetProductDTO> GetProductById(int id);

@@ -11,9 +11,6 @@ namespace Products.API.Helpers
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ProductsDBContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
-
             #region Repositories
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IProductRepository, ProductRepository>();
