@@ -1,4 +1,5 @@
 using Products.API.Helpers;
+using Products.API.Helpers.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 ConfigDataSource.RunMigrations(app);
+app.UseRequestLogMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
