@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Products.Application.Interfaces;
 
-namespace Products.Application.Interfaces
+public interface IDiscountService
 {
-    public interface IDiscountService
-    {
-        Task<decimal> GetDiscount(int productId);
-    }
+    Task<decimal> GetDiscount(int productId);
 }

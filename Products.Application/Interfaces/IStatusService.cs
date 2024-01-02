@@ -6,11 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Products.Application.Interfaces
+namespace Products.Application.Interfaces;
+
+public interface IStatusService
 {
-    public interface IStatusService
-    {
-        List<Status> GetStatuses();
-        Status GetStatus(int id);
-    }
+    List<Status> GetStatuses();
+    Status GetStatus(int id);
 }

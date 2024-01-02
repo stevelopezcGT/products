@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Products.Domain.Interfaces
+namespace Products.Domain.Interfaces;
+
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork
-    {
-        int SaveChanges();
+    int SaveChanges();
 
-        Task<int> SaveChangesAsync();
+    Task<int> SaveChangesAsync();
 
-        IGenericRepository<T> GenericRepository<T>() where T : class;
-        IProductRepository ProductRepository { get; }
-    }
+    IGenericRepository<T> GenericRepository<T>() where T : class;
+    IProductRepository ProductRepository { get; }
 }

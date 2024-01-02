@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Products.Domain.Entities
+namespace Products.Domain.Entities;
+
+public class Status
 {
-    public class Status
-    {
-        public int Id { get; set; }
-        public string StatusName { get; set; } = string.Empty;
-    }
+    public int Id { get; set; }
+    public string StatusName { get; set; } = string.Empty;
 }

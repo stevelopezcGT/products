@@ -1,17 +1,13 @@
-﻿using Products.Domain.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Products.Application.Features.Product.Commands;
+using Products.Domain.DTOs;
 
-namespace Products.Application.Interfaces
+namespace Products.Application.Interfaces;
+
+public interface IProductService
 {
-    public interface IProductService
-    {
-        Task<GetProductDTO> Add(NewProductDTO productDTO);
-        Task<GetProductDTO> Update(EditProductDTO productDTO);
-        Task<int> Delete(int id);
-        Task<GetProductDTO> GetProductById(int id);
-    }
+    Task<GetProductResponse> Add(NewProduct newProduct);
+    Task<GetProductResponse> Update(EditProduct editProduct);
+    Task<int> Delete(int id);
+    Task<GetProductResponse> GetProductById(int id);
 }
+
