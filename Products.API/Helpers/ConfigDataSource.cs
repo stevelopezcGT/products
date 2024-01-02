@@ -1,37 +1,32 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Products.Application.Interfaces;
-using Products.Application.Services;
-using Products.Data.Repositories;
 using Products.Data;
-using Products.Domain.Interfaces;
 
-namespace Products.API.Helpers
+namespace Products.API.Helpers;
+
+public static class ConfigDataSource
 {
-    public static class ConfigDataSource
+    public static IServiceCollection AddDataSource(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection AddDataSource(this IServiceCollection services, IConfiguration configuration)
-        {
-            services.AddDbContext<ProductsDBContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        services.AddDbContext<ProductsDBContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
-            return services;
-        }
+        return services;
+    }
 
-        public static void RunMigrations(IApplicationBuilder app) 
+    public static void RunMigrations(IApplicationBuilder app) 
+    {
+        using (var scope = app.ApplicationServices.CreateScope())
         {
-            using (var scope = app.ApplicationServices.CreateScope())
+            var services = scope.ServiceProvider;
+
+            try
             {
-                var services = scope.ServiceProvider;
+                var dbContext = services.GetRequiredService<ProductsDBContext>();
+                dbContext.Database.Migrate();
+            }
+            catch (Exception ex)
+            {
 
-                try
-                {
-                    var dbContext = services.GetRequiredService<ProductsDBContext>();
-                    dbContext.Database.Migrate();
-                }
-                catch (Exception ex)
-                {
-
-                }
             }
         }
     }

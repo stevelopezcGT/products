@@ -1,11 +1,10 @@
-﻿namespace Products.API.Helpers.Middleware
+﻿namespace Products.API.Helpers.Middleware;
+
+public static class RequestLogMiddlewareExtensions
 {
-    public static class RequestLogMiddlewareExtensions
+    public static IApplicationBuilder UseRequestLogMiddleware(
+        this IApplicationBuilder builder)
     {
-        public static IApplicationBuilder UseRequestLogMiddleware(
-            this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<RequestLogMiddleware>();
-        }
+        return builder.UseMiddleware<RequestLogMiddleware>();
     }
 }
