@@ -54,7 +54,7 @@ public class ProductsController : ControllerBase
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetProductResponse>> InsertProduct(NewProduct newProductDTO)
+    public async Task<ActionResult<GetProductResponse>> InsertProduct([FromBody] NewProduct newProductDTO)
     {
         if (!ModelState.IsValid)
             return BadRequest(ErrorMessages.Convert(ModelState));
@@ -77,10 +77,10 @@ public class ProductsController : ControllerBase
     /// </summary>
     /// <param name="editProductDTO">Product instance to be update <see cref="EditProduct"/></param>
     /// <returns>A product instance of <see cref="GetProductResponse"/></returns>
-    [HttpPut("{id}")]
+    [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetProductResponse>> UpdateProduct(EditProduct editProductDTO)
+    public async Task<ActionResult<GetProductResponse>> UpdateProduct([FromBody] EditProduct editProductDTO)
     {
         if (!ModelState.IsValid)
             return BadRequest(ErrorMessages.Convert(ModelState));

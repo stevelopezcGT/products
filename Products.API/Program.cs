@@ -1,5 +1,7 @@
+using MediatR;
 using Products.API.Helpers;
-using Products.API.Helpers.Middleware;
+using Products.API.Middleware;
+using Serilog;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +10,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDataSource(builder.Configuration);
 builder.Services.AddDependencies(builder.Configuration);
 builder.Services.AddSwagger(builder.Configuration);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+builder.Services.AddMediatRHandlers();
+
+var logPath = AppContext.BaseDirectory + "/log/log.txt";
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+    .WriteTo.Console()
+    .WriteTo.File(logPath, rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 builder.Services.AddMemoryCache();
 
