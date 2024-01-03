@@ -1,4 +1,4 @@
-﻿namespace Products.API.Helpers.Middleware;
+﻿namespace Products.API.Middleware;
 
 public static class RequestLogMiddlewareExtensions
 {
