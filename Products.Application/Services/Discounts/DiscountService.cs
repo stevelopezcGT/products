@@ -24,7 +24,7 @@ public class DiscountService : IDiscountService
         if (!string.IsNullOrEmpty(urlApi))
         {
             httpClient.BaseAddress = new Uri(urlApi);
-            var result = await httpClient.GetAsync($"/{productId}");
+            var result = await httpClient.GetAsync($"/api/products/discount/{productId}");
             if (result.IsSuccessStatusCode)
             {
                 var response = await result.Content.ReadAsStringAsync();
