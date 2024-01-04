@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Products.Application.Interfaces;
-using Products.Application.Services;
-using Products.Data;
+﻿using Products.Application.Interfaces.Discounts;
+using Products.Application.Interfaces.Products;
+using Products.Application.Interfaces.Statuses;
+using Products.Application.Services.Discounts;
+using Products.Application.Services.Products;
+using Products.Application.Services.Statuses;
 using Products.Data.Repositories;
 using Products.Domain.Interfaces;
 

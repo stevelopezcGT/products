@@ -5,9 +5,9 @@ namespace Products.Application.Helpers.Products;
 
 public static class ConvertProductToGetProductDTO
 {
-    public static GetProductResponse Convert(Product product, Status status, decimal discount)
+    public static ProductResponse Convert(Product product, Status status, decimal discount)
     {
-        return new GetProductResponse
+        return new ProductResponse
         {
             Description = product.Description,
             Discount = discount,

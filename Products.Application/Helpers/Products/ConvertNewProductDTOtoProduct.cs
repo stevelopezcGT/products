@@ -1,11 +1,11 @@
-﻿using Products.Application.Features.Product.Commands;
+﻿using Products.Application.Features.Product.Create;
 using Products.Domain.Entities;
 
 namespace Products.Application.Helpers.Products;
 
 public static class ConvertNewProductDTOtoProduct
 {
-    public static Product Convert(NewProduct newProductDTO)
+    public static Product Convert(CreateProductCommand newProductDTO)
     {
         return new Product
         {

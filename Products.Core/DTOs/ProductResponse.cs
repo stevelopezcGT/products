@@ -1,6 +1,6 @@
 ﻿namespace Products.Domain.DTOs;
 
-public class GetProductResponse
+public class ProductResponse
 {
     public int ProductId { get; set; }
     public string Name { get; set; } = string.Empty;
