@@ -9,27 +9,27 @@ namespace Products.Data.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly ProductsDBContext dBContext;
+    private readonly ProductsDBContext dbContext;
 
     public UnitOfWork(ProductsDBContext _dbContext) {
-        dBContext = _dbContext;
+        dbContext = _dbContext;
     }
 
     private IProductRepository _productRepository;
-    public IProductRepository ProductRepository => _productRepository?? (_productRepository = new ProductRepository(dBContext));
+    public IProductRepository ProductRepository => _productRepository?? (_productRepository = new ProductRepository(dbContext));
 
     public IGenericRepository<T> GenericRepository<T>() where T : class
     {
-        return new GenericRepository<T>(dBContext);
+        return new GenericRepository<T>(dbContext);
     }
 
     public int SaveChanges()
     {
-        throw new NotImplementedException();
+        return dbContext.SaveChanges();
     }
 
-    public Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync()
     {
-        throw new NotImplementedException();
+        return await dbContext.SaveChangesAsync();
     }
 }
