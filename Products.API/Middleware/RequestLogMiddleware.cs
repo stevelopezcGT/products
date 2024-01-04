@@ -13,16 +13,16 @@ public class RequestLogMiddleware
 
     static readonly Serilog.ILogger Log = Serilog.Log.ForContext<RequestLogMiddleware>();
 
-    private readonly RequestDelegate _next;
+    private readonly RequestDelegate next;
 
-    public RequestLogMiddleware(RequestDelegate next)
+    public RequestLogMiddleware(RequestDelegate _next)
     {
-        _next = next;
+        this.next = _next;
     }
     public async Task InvokeAsync(HttpContext context)
     {
         var sw = Stopwatch.StartNew();
-        await _next(context);
+        await next(context);
 
         sw.Stop();
         var statusCode = context.Response?.StatusCode;

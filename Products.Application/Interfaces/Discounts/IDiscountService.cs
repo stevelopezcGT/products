@@ -1,4 +1,4 @@
-﻿namespace Products.Application.Interfaces;
+﻿namespace Products.Application.Interfaces.Discounts;
 
 public interface IDiscountService
 {

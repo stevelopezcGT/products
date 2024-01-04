@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.OpenApi.Models;
-using Products.Application.Interfaces;
-using Products.Application.Services;
-using Products.Data;
-using Products.Data.Repositories;
-using Products.Domain.Interfaces;
+﻿using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace Products.API.Helpers;

@@ -1,10 +1,15 @@
-﻿using Products.Application.Features.Product.Commands;
+﻿using Products.Application.Features.Product.Create;
+using Products.Application.Features.Product.Edit;
 using Products.Application.Helpers.Products;
-using Products.Application.Interfaces;
+using Products.Application.Interfaces.Discounts;
+using Products.Application.Interfaces.Products;
+using Products.Application.Interfaces.Statuses;
 using Products.Domain.DTOs;
+using Products.Domain.Entities;
+using Products.Domain.Exceptions;
 using Products.Domain.Interfaces;
 
-namespace Products.Application.Services;
+namespace Products.Application.Services.Products;
 
 public class ProductService : IProductService
 {
@@ -13,34 +18,28 @@ public class ProductService : IProductService
     private readonly IStatusService statusService;
     private readonly IDiscountService discountService;
 
-    public ProductService(IUnitOfWork _unitOfWork, 
-                          IProductRepository _productRepository, 
+    public ProductService(IUnitOfWork _unitOfWork,
+                          IProductRepository _productRepository,
                           IStatusService _statusService,
-                          IDiscountService _discountService) 
+                          IDiscountService _discountService)
     {
-        this.unitOfWork = _unitOfWork;
-        this.productRepository = _productRepository;
+        unitOfWork = _unitOfWork;
+        productRepository = _productRepository;
         statusService = _statusService;
         discountService = _discountService;
     }
 
-    public async Task<GetProductResponse> Add(NewProduct newProduct)
+    public async Task Add(CreateProductCommand newProduct)
     {
         var product = ConvertNewProductDTOtoProduct.Convert(newProduct);
         productRepository.Add(product);
 
         await unitOfWork.SaveChangesAsync();
-
-        var status = statusService.GetStatus(newProduct.StatusId);
-        return ConvertProductToGetProductDTO.Convert(product, status, 0);
     }
 
     public async Task<int> Delete(int id)
     {
         var product = await productRepository.GetByIdAsync(id);
-        if (product == null)
-            throw new Exception("Product doesn't exists");
-
         productRepository.Remove(product);
 
         var result = unitOfWork.SaveChanges();
@@ -48,30 +47,35 @@ public class ProductService : IProductService
 
     }
 
-    public async Task<GetProductResponse> GetProductById(int id)
+    public async Task<bool> ExistsAsync(int id)
     {
-        var product = await productRepository.GetByIdAsync(id);
-        if (product == null)
-            throw new Exception("Product doesn't exists");
-
-        var status = statusService.GetStatus(product.StatusId);
-        var discount = await discountService.GetDiscount( id );
-        return ConvertProductToGetProductDTO.Convert(product, status, discount);
+        return await productRepository.AnyAsync(x => x.Id == id);
     }
 
-    public async Task<GetProductResponse> Update(EditProduct editProduct)
+    public async Task<ProductResponse> GetProductById(int id)
+    {
+        var product = await productRepository.GetByIdAsync(id);
+
+        if (product == null)
+            throw new ProductNotFoundException(id);
+
+        return await ProductToResponse(product);
+    }
+
+    public async Task Update(EditProductCommand editProduct)
     {
         var product = await productRepository.GetByIdAsync(editProduct.Id);
-        if (product == null)
-            throw new Exception("Product doesn't exists");
-
         product = ConvertEditProductDTOtoProduct.Convert(editProduct, product);
 
         productRepository.Update(product);
         unitOfWork.SaveChanges();
+    }
 
-        var status = statusService.GetStatus(editProduct.StatusId);
-        var discount = await discountService.GetDiscount(editProduct.Id);
+    private async Task<ProductResponse> ProductToResponse(Product product)
+    {
+        var status = statusService.GetStatus(product.StatusId);
+        var discount = await discountService.GetDiscount(product.Id);
         return ConvertProductToGetProductDTO.Convert(product, status, discount);
     }
+
 }

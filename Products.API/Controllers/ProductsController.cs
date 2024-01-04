@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Products.API.Helpers;
-using Products.Application.Features.Product.Commands;
-using Products.Application.Features.Product.Queries;
-using Products.Application.Interfaces;
-using Products.Application.Services;
+using Products.Application.Features.Product.Create;
+using Products.Application.Features.Product.Edit;
+using Products.Application.Features.Product.Read;
 using Products.Domain.DTOs;
 using System.Net;
 
@@ -20,7 +19,7 @@ public class ProductsController : ControllerBase
 {
     private readonly IMediator mediator;
 
-    public ProductsController( IMediator _mediator)
+    public ProductsController(IMediator _mediator)
     {
         mediator = _mediator;
     }
@@ -29,73 +28,42 @@ public class ProductsController : ControllerBase
     /// Get a Product by Id
     /// </summary>
     /// <param name="id">Product Id</param>
-    /// <returns>A product instance of <see cref="GetProductResponse"/></returns>
+    /// <returns>A product instance of <see cref="ProductResponse"/></returns>
     [HttpGet("{id}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetProductResponse>> GetById(int id)
+    public async Task<ActionResult<ProductResponse>> GetById(int id)
     {
-        try
-        {
-            var result = await mediator.Send(new GetProduct { Id = id });
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return NotFound(ex.Message);
-        }        
+        var result = await mediator.Send(new ReadProductQuery { Id = id });
+
+        return Ok(result);
     }
 
     /// <summary>
     /// Add a Product
     /// </summary>
-    /// <param name="newProductDTO">Product instance to be created <see cref="NewProduct"/></param>
-    /// <returns>A product instance of <see cref="GetProductResponse"/></returns>
+    /// <param name="newProductDTO">Product instance to be created <see cref="CreateProductCommand"/></param>
+    /// <returns>A product instance of <see cref="ProductResponse"/></returns>
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-    public async Task<ActionResult<GetProductResponse>> InsertProduct([FromBody] NewProduct newProductDTO)
+    public async Task<ActionResult<ProductResponse>> InsertProduct([FromBody] CreateProductCommand newProductDTO)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ErrorMessages.Convert(ModelState));
-
-        try
-        {
-            var result = await mediator.Send(newProductDTO);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-
-        
+        await mediator.Send(newProductDTO);
+        return Ok();
     }
 
     /// <summary>
     /// Update a Product
     /// </summary>
-    /// <param name="editProductDTO">Product instance to be update <see cref="EditProduct"/></param>
-    /// <returns>A product instance of <see cref="GetProductResponse"/></returns>
+    /// <param name="editProductDTO">Product instance to be update <see cref="EditProductCommand"/></param>
+    /// <returns>A product instance of <see cref="ProductResponse"/></returns>
     [HttpPut]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
-    public async Task<ActionResult<GetProductResponse>> UpdateProduct([FromBody] EditProduct editProductDTO)
+    public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] EditProductCommand editProductDTO)
     {
-        if (!ModelState.IsValid)
-            return BadRequest(ErrorMessages.Convert(ModelState));
-
-        try
-        {
-            var result = await mediator.Send(editProductDTO);
-            return Ok(result);
-        }
-        catch (Exception ex)
-        {
-            return NotFound(ex.Message);
-        }
-
-        
+        await mediator.Send(editProductDTO);
+        return Ok();
     }
-
 }

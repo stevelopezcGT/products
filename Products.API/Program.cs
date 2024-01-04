@@ -29,7 +29,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 ConfigDataSource.RunMigrations(app);
+/* Custom Middlewares*/
 app.UseRequestLogMiddleware();
+app.UseExceptionHandlerMiddleware();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

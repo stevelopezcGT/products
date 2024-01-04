@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Products.Application.Interfaces;
+using Products.Application.Interfaces.Discounts;
 using Products.Domain.Model;
 
-namespace Products.Application.Services;
+namespace Products.Application.Services.Discounts;
 
 public class DiscountService : IDiscountService
 {

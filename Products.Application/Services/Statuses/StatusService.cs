@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
-using Products.Application.Interfaces;
+using Products.Application.Interfaces.Statuses;
 using Products.Domain.Entities;
 
-namespace Products.Application.Services;
+namespace Products.Application.Services.Statuses;
 
 public class StatusService : IStatusService
 {
@@ -15,9 +15,9 @@ public class StatusService : IStatusService
         memoryCache = _memoryCache;
     }
 
-    public Status GetStatus(int id)
+    public Status? GetStatus(int id)
     {
-        return GetStatuses().FirstOrDefault(d=> d.Id == id);
+        return GetStatuses().FirstOrDefault(d => d.Id == id);
     }
 
     public List<Status> GetStatuses()
@@ -29,7 +29,12 @@ public class StatusService : IStatusService
         return listStatus;
     }
 
-    private List<Status> AddStatuses() 
+    public bool Exists(int id)
+    {
+        return GetStatuses().Any(d => d.Id == id);
+    }
+
+    private List<Status> AddStatuses()
     {
         List<Status> listStatus = new List<Status>
         {
