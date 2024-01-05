@@ -17,4 +17,9 @@
     <PackageReference Include="coverlet.collector" Version="6.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Products.API\Products.API.csproj" />
+    <ProjectReference Include="..\Products.Core\Products.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
