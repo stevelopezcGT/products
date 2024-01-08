@@ -8,9 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Abstractions\Messaging\ICommandHandler.cs" />
-    <Compile Remove="Abstractions\Messaging\IQuery.cs" />
     <Compile Remove="Abstractions\Messaging\IQueryBase.cs" />
-    <Compile Remove="Abstractions\Messaging\IQueryHandler.cs" />
     <Compile Remove="Features\Products\Read\ReadProductQueryValidator.cs" />
   </ItemGroup>
 

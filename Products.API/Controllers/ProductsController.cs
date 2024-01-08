@@ -5,6 +5,7 @@ using Products.Application.Features.Product.Create;
 using Products.Application.Features.Product.Edit;
 using Products.Application.Features.Product.Read;
 using Products.Domain.DTOs;
+using Products.Domain.Shared;
 using System.Net;
 
 namespace Products.API.Controllers;
@@ -63,7 +64,7 @@ public class ProductsController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NotFound)]
     public async Task<ActionResult<ProductResponse>> UpdateProduct([FromBody] EditProductCommand editProductDTO)
     {
-        await mediator.Send(editProductDTO);
-        return Ok();
+        var result = await mediator.Send(editProductDTO);
+        return result.IsSuccess ? Ok(result) : BadRequest(result.Error.Message);
     }
 }
