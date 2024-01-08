@@ -1,11 +1,13 @@
 ﻿using MediatR;
+using Products.Application.Abstractions.Messaging;
 using Products.Application.Interfaces.Products;
 using Products.Domain.DTOs;
 using Products.Domain.Enums;
+using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Read;
 
-internal sealed class ReadProductHandler : IRequestHandler<ReadProductQuery, ProductResponse>
+internal sealed class ReadProductHandler : IQueryHandler<ReadProductQuery, ProductResponse>
 {
     private readonly IProductService productService;
 
@@ -14,13 +16,14 @@ internal sealed class ReadProductHandler : IRequestHandler<ReadProductQuery, Pro
         productService = _productService;
     }
 
-    public async Task<ProductResponse> Handle(ReadProductQuery requestProduct, CancellationToken cancellationToken)
+    public async Task<Result<ProductResponse>> Handle(ReadProductQuery requestProduct, CancellationToken cancellationToken)
     {
         var product = await productService.GetProductById(requestProduct.Id);
 
         if (product == null)
-            throw new KeyNotFoundException(CodeMessages.PRODUCT_NOT_FOUND);
+            return Result.Failure<ProductResponse>(new Error(CodeMessages.PRODUCT_NOT_FOUND, Messages.PRODUCT_NOT_FOUND));
 
         return product;
-    }   
+    }
+
 }

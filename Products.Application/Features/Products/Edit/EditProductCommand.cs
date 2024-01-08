@@ -1,4 +1,5 @@
 ﻿using Products.Application.Abstractions.Messaging;
+using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Edit;
 public class EditProductCommand : ICommand
