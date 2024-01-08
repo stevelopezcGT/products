@@ -2,10 +2,11 @@
 using Products.Application.Interfaces.Products;
 using Products.Domain.DTOs;
 using Products.Domain.Enums;
+using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Read;
 
-internal sealed class ReadProductHandler : IRequestHandler<ReadProductQuery, ProductResponse>
+internal sealed class ReadProductHandler : IRequestHandler<ReadProductQuery, Result>
 {
     private readonly IProductService productService;
 
@@ -14,13 +15,13 @@ internal sealed class ReadProductHandler : IRequestHandler<ReadProductQuery, Pro
         productService = _productService;
     }
 
-    public async Task<ProductResponse> Handle(ReadProductQuery requestProduct, CancellationToken cancellationToken)
+    public async Task<Result> Handle(ReadProductQuery requestProduct, CancellationToken cancellationToken)
     {
         var product = await productService.GetProductById(requestProduct.Id);
 
         if (product == null)
-            throw new KeyNotFoundException(CodeMessages.PRODUCT_NOT_FOUND);
+            return Result.Failure(new Error(CodeMessages.PRODUCT_NOT_FOUND, Messages.PRODUCT_NOT_FOUND));
 
-        return product;
+        return Result.Success(product);
     }   
 }

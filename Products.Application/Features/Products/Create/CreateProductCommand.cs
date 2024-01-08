@@ -1,8 +1,9 @@
 ﻿using Products.Application.Abstractions.Messaging;
+using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Create;
 
-public class CreateProductCommand : ICommand
+public class CreateProductCommand : ICommand<int>
 {
     public string? Name { get; set; }
     public int StatusId { get; set; }

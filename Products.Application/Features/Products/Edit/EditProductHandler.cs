@@ -2,11 +2,12 @@
 using Products.Application.Abstractions.Messaging;
 using Products.Application.Interfaces.Products;
 using Products.Domain.DTOs;
+using Products.Domain.Enums;
 using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Edit;
 
-class EditProductHandler : IRequestHandler<EditProductCommand>
+class EditProductHandler : IRequestHandler<EditProductCommand, Result>
 {
     private readonly IProductService productService;
 
@@ -15,11 +16,13 @@ class EditProductHandler : IRequestHandler<EditProductCommand>
         productService = _productService;
     }
 
-    public async Task Handle(EditProductCommand requestEditProduct, CancellationToken cancellationToken)
+    public async Task<Result> Handle(EditProductCommand requestEditProduct, CancellationToken cancellationToken)
     {
-        await productService.Update(requestEditProduct);
+        var result = await productService.Update(requestEditProduct);
 
-        //return Result.Success();
+        return result? Result.Success(): Result.Failure(new Error(CodeMessages.PRODUCT_CANNOT_UPDATE, Messages.PRODUCT_CANNOT_UPDATE));
     }
+
+
 }
 

@@ -29,12 +29,14 @@ public class ProductService : IProductService
         discountService = _discountService;
     }
 
-    public async Task Add(CreateProductCommand newProduct)
+    public async Task<int> Add(CreateProductCommand newProduct)
     {
         var product = ConvertNewProductDTOtoProduct.Convert(newProduct);
         productRepository.Add(product);
 
         await unitOfWork.SaveChangesAsync();
+
+        return product.Id;
     }
 
     public async Task<int> Delete(int id)
@@ -62,13 +64,15 @@ public class ProductService : IProductService
         return await ProductToResponse(product);
     }
 
-    public async Task Update(EditProductCommand editProduct)
+    public async Task<bool> Update(EditProductCommand editProduct)
     {
         var product = await productRepository.GetByIdAsync(editProduct.Id);
         product = ConvertEditProductDTOtoProduct.Convert(editProduct, product);
 
         productRepository.Update(product);
         unitOfWork.SaveChanges();
+
+        return true;
     }
 
     private async Task<ProductResponse> ProductToResponse(Product product)

@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Products.Application.Interfaces.Products;
+using Products.Domain.Shared;
 
 namespace Products.Application.Features.Product.Create;
 
-internal sealed class CreateProductHandler : IRequestHandler<CreateProductCommand>
+internal sealed class CreateProductHandler : IRequestHandler<CreateProductCommand, Result<int>>
 {
     private readonly IProductService productService;
 
@@ -12,9 +13,10 @@ internal sealed class CreateProductHandler : IRequestHandler<CreateProductComman
         productService = _productService;
     }
 
-    public async Task Handle(CreateProductCommand requestNewProduct, CancellationToken cancellationToken)
+    public async Task<Result<int>> Handle(CreateProductCommand requestNewProduct, CancellationToken cancellationToken)
     {
-        await productService.Add(requestNewProduct);
+        var newProductId = await productService.Add(requestNewProduct);
+        return Result.Success(newProductId);
     }
 
     

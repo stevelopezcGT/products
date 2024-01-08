@@ -49,8 +49,8 @@ public class ProductsController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     public async Task<ActionResult<ProductResponse>> InsertProduct([FromBody] CreateProductCommand newProductDTO)
     {
-        await mediator.Send(newProductDTO);
-        return Ok();
+        var result = await mediator.Send(newProductDTO);
+        return result.IsSuccess ? Ok(result) : BadRequest(result.Error.Message);
     }
 
     /// <summary>
